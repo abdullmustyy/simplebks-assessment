@@ -1,4 +1,4 @@
-import { connectMongoDb } from "../../utils/mongodb.js";
+import { database } from "../utils/mongodb.js";
 
 // Basic HTTP authentication middleware
 export const auth = async (req, res, next) => {
@@ -23,21 +23,11 @@ export const auth = async (req, res, next) => {
     const username = credentials[0];
     const password = +credentials[1];
 
-    // Found seller
-    let seller;
-
-    // Connect to MongoDB
-    await connectMongoDb(async (database) => {
-      const olistSellersDataset = await database.collection(
-        "olist_sellers_dataset"
-      );
-      const data = await olistSellersDataset.findOne({
-        seller_id: username,
-        seller_zip_code_prefix: password,
-      });
-
-      // Assign the seller to the retrirved data
-      seller = data;
+    // Get the MongoDB database collection
+    const sellersDataset = database.collection("olist_sellers_dataset");
+    const seller = await sellersDataset.findOne({
+      seller_id: username,
+      seller_zip_code_prefix: password,
     });
 
     // If credentials are not valid
@@ -46,10 +36,14 @@ export const auth = async (req, res, next) => {
       // Set status code to '401 Unauthorized' and 'WWW-Authenticate' header to 'Basic'
       res.status(401).set("WWW-Authenticate", "Basic");
       next(err);
-    }
+    } else {
+      // Set the seller to the request object
+      req.seller = { sellerId: seller.seller_id };
 
-    res.status(200);
-    // Continue the execution
-    next();
+      // Set status code to '200 OK'
+      res.status(200);
+      // Continue the execution
+      next();
+    }
   }
 };
