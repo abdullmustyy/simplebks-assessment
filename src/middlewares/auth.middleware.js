@@ -6,7 +6,13 @@ export const auth = async (req, res, next) => {
   if (!req.get("Authorization")) {
     const err = new Error("Not Authenticated!");
     // Set status code to '401 Unauthorized' and 'WWW-Authenticate' header to 'Basic'
-    res.status(401).set("WWW-Authenticate", "Basic");
+    res
+      .status(401)
+      .set("WWW-Authenticate", "Basic")
+      .json({
+        success: false,
+        error: { code: 401, error: "Not Authenticated!" },
+      });
     next(err);
   }
   // If 'Authorization' header present
@@ -34,7 +40,13 @@ export const auth = async (req, res, next) => {
     if (!seller) {
       const err = new Error("Not Authenticated!");
       // Set status code to '401 Unauthorized' and 'WWW-Authenticate' header to 'Basic'
-      res.status(401).set("WWW-Authenticate", "Basic");
+      res
+        .status(401)
+        .set("WWW-Authenticate", "Basic")
+        .json({
+          success: false,
+          error: { code: 401, error: "Not Authenticated!" },
+        });
       next(err);
     } else {
       // Set the seller to the request object

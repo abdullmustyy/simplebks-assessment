@@ -4,6 +4,7 @@ import chalk from "chalk";
 // File imports
 import { auth } from "./src/middlewares/auth.middleware.js";
 import { sellerRouter } from "./src/routes/seller.route.js";
+import { accountRouter } from "./src/routes/account.route.js";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(auth);
 
 // Routes
 app.use(sellerRouter);
+app.use(accountRouter);
 
 // Base route
 app.get("/", (req, res) => {

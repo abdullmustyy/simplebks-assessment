@@ -7,6 +7,17 @@ const getSellerOrderItems = async (req, res) => {
     // Destructure sellerId of the currently logged in seller
     const { sellerId } = req.seller;
 
+    // Limit should not be greater than 100
+    if (+limit > 100) {
+      return res.status(400).json({
+        success: false,
+        error: {
+          code: 400,
+          error: "Limit should not be greater than 100.",
+        },
+      });
+    }
+
     // Get the MongoDB database collection
     const orderItemsDataset = database.collection("olist_order_items_dataset");
     const sellerOrderItems = await orderItemsDataset
@@ -22,7 +33,10 @@ const getSellerOrderItems = async (req, res) => {
     if (sellerOrderItems.length === 0) {
       return res.status(404).json({
         success: false,
-        error: { code: 404, error: "Seller order items not found." },
+        error: {
+          code: 404,
+          error: "The currently logged in user has no order item.",
+        },
       });
     }
 
@@ -72,7 +86,7 @@ const getSellerOrderItems = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      error: { code: 500, error: "Internal server error." },
+      error: { code: 500, error: "Internal server error." || error.message },
     });
   }
 };
@@ -107,7 +121,7 @@ const deleteOrderItem = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      error: { code: 500, error: "Internal server error." },
+      error: { code: 500, error: "Internal server error." || error.message },
     });
   }
 };
