@@ -18,7 +18,7 @@ app.use(sellerRouter);
 
 // Base route
 app.get("/", (req, res) => {
-  res.send("Simplebks Job Assessment, please hire me :)");
+  res.send("Simplebks Job Assessment, hire me :)");
 });
 
 // Run the server

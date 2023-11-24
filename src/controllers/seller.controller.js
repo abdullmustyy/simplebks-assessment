@@ -26,20 +26,25 @@ const getSellerOrderItems = async (req, res) => {
       });
     }
 
+    // Get product category name with product_id
     async function getProductCategoryName(productId) {
+      // Get the MongoDB database collection
       const productsDataset = database.collection("olist_products_dataset");
-
+      // Get the product with the given product_id
       const product = await productsDataset.findOne({
         product_id: productId,
       });
 
+      // Send a not found error if product does not exist
       if (!product) {
         throw new Error("Product not found.");
       }
 
+      // Return the product category name
       return product.product_category_name;
     }
 
+    // Get product category name with product_id
     const sellerOrderItemsWithCategory = await Promise.all(
       sellerOrderItems.map(async (order) => {
         const productCategory = await getProductCategoryName(order.product_id);
@@ -65,7 +70,46 @@ const getSellerOrderItems = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+    res.status(500).json({
+      success: false,
+      error: { code: 500, error: "Internal server error." },
+    });
   }
 };
 
-export { getSellerOrderItems };
+const deleteOrderItem = async (req, res) => {
+  try {
+    // Destructure id from request params
+    const { id } = req.params;
+    // Get the MongoDB database collection
+    const orderItemsDataset = database.collection("olist_order_items_dataset");
+
+    // Delete the order item with the given id
+    const deletedOrderItem = await orderItemsDataset.deleteOne({
+      order_item_id: +id,
+    });
+
+    // Send a not found error if deletedOrderItem does not exist
+    if (deletedOrderItem.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        error: { code: 404, error: "Order item not found." },
+      });
+    }
+
+    // Send a success response if deletedOrderItem exists
+    res.status(200).json({
+      success: true,
+      message: "Order item deleted successfully.",
+      data: deletedOrderItem,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: { code: 500, error: "Internal server error." },
+    });
+  }
+};
+
+export { getSellerOrderItems, deleteOrderItem };
