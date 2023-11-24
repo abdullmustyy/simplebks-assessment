@@ -6,7 +6,7 @@ import { auth } from "./src/middlewares/auth.middleware.js";
 import { sellerRouter } from "./src/routes/seller.route.js";
 import { accountRouter } from "./src/routes/account.route.js";
 
-const app = express();
+export const app = express();
 
 // Middlewares
 app.use(express.json());
