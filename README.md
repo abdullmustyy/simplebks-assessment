@@ -23,6 +23,8 @@ npm run dev
 
 ### API Documentation
 
+Refer to the [Postman Documentation↗](https://documenter.getpostman.com/view/25333551/2s9YeD8DN9) for sample requests and response documentation.
+
 #### Authentication
 
 Authentication is via HTTP Basic using the `seller_id` and `seller_zip_code_prefix` from the `olist_sellers_dataset` collection as username and password respectively.
@@ -71,7 +73,3 @@ The API endpoints are covered by unit tests using the Mocha and Chai frameworks.
 ```bash
 npm test
 ```
-
-### Documentation
-
-Refer to the [Postman Documentation↗](https://documenter.getpostman.com/view/25333551/2s9YeD8DN9) for sample requests and response documentation.
