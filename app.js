@@ -20,7 +20,9 @@ app.use(accountRouter);
 
 // Base route
 app.get("/", (req, res) => {
-  res.send("Simplebks Job Assessment, hire me :)");
+  res.send(
+    "<a href='https://simplebks.com/' target='_blanck'>Simplebks</a> Job Assessment, hire me :)"
+  );
 });
 
 // Run the server
