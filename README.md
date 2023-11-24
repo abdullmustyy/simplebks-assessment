@@ -59,7 +59,8 @@ Authentication is via HTTP Basic using the `seller_id` and `seller_zip_code_pref
 
 ##### `/account`
 
-* **PUT*Updates are logged in the seller's city or/and state.
+* **PUT**
+  * Updates are logged in the seller's city or/and state.
   * Should return new seller city and state as a response.
 
 ### Error Handling
