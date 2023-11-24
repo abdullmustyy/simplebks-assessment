@@ -1,4 +1,4 @@
-# Simplebks-assessment
+# Simplebks Asessment
 
 A job assessment from Simplebks, this Node.js API provides routes for managing order items and seller information for the Brazilian E-Commerce Public Dataset by Olist.
 
